@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('media', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('type');
+            $table->enum('type', ['Manga', 'Anime', 'Book', 'Movie']);
+            $table->enum('status', ['Watching', 'Completed', 'On Hold', 'Dropped', 'Plan to Watch'])->nullable();
             $table->text('overview')->nullable();
             $table->string('image_path')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

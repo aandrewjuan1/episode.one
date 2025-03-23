@@ -3,8 +3,8 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:header container class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+    <body class="min-h-screen bg-zinc-50 dark:bg-zinc-900">
+        <flux:header container sticky class="bg-zinc-50 dark:bg-zinc-900">
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <a href="{{ route('dashboard') }}" class="ml-1 flex items-center space-x-2" wire:navigate>
@@ -14,16 +14,17 @@
             <flux:spacer />
 
             <flux:navbar class="mr-1.5 space-x-0.5 py-0!">
-                <flux:tooltip :content="__('Search')" position="bottom">
+                {{-- <flux:tooltip :content="__('Search')" position="bottom">
                     <flux:navbar.item class="!h-10 [&>div>svg]:size-5" icon="magnifying-glass" href="#" :label="__('Search')" />
-                </flux:tooltip>
-                <flux:tooltip :content="__('Library')" position="bottom">
-                    <flux:navbar.item
-                        class="h-10 max-lg:hidden [&>div>svg]:size-5"
-                        icon="book-open-text"
-                        label="Library"
-                    />
-                </flux:tooltip>
+                </flux:tooltip> --}}
+                <flux:navbar.item
+                    href="{{ route('library') }}"
+                    wire:navigate
+                    class="max-md:hidden [&>div>svg]:size-5"
+                    :active="request()->routeIs('library')"
+                    icon="book-open-text"
+                >Library
+                </flux:navbar.item>
             </flux:navbar>
 
             <!-- Desktop User Menu -->
@@ -79,8 +80,12 @@
                 <span class="font-boldonse text-2xl">episode.one</span>
             </a>
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="book-open-text">
-                {{ __('Library') }}
+                <flux:navlist.item
+                    icon="book-open-text"
+                    wire:navigate
+                    href="{{ route('library') }}"
+                    :active="request()->routeIs('library')">
+                    {{ __('Library') }}
                 </flux:navlist.item>
             </flux:navlist>
         </flux:sidebar>

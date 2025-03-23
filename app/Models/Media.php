@@ -12,6 +12,8 @@ class Media extends Model
     protected $fillable = [
         'title',
         'type', // e.g., Manga, Anime, Book, Movie
+        'status', // e.g., Watching, Completed, On Hold, Dropped, Plan to Watch
+        'genre',
         'overview',
         'image_path',
         'user_id', // Foreign key to users table
@@ -20,6 +22,11 @@ class Media extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class, 'genre_media');
     }
 
     public function reviews()

@@ -57,6 +57,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(User::class, 'followers', 'following_id', 'follower_id')->withTimestamps();
     }
 
+    public function media()
+    {
+        return $this->hasMany(Media::class);
+    }
+
     /**
      * Get the user's initials
      */
