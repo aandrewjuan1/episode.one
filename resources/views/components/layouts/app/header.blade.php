@@ -8,7 +8,7 @@
             <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
 
             <a href="{{ route('dashboard') }}" class="ml-1 flex items-center space-x-2" wire:navigate>
-                <span class="font-boldonse text-3xl">episode.one</span>
+                <span class="font-boldonse text-2xl">episode.one</span>
             </a>
 
             <flux:spacer />
