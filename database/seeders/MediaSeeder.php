@@ -14,6 +14,7 @@ class MediaSeeder extends Seeder
      */
     public function run()
     {
-        Media::factory()->count(50)->create(); // Create 50 media records
+        // Create 50 random media records
+        Media::factory()->count(50)->create();
     }
 }

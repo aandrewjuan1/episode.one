@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Media extends Model
 {
@@ -13,7 +14,6 @@ class Media extends Model
         'title',
         'type', // e.g., Manga, Anime, Book, Movie
         'status', // e.g., Watching, Completed, On Hold, Dropped, Plan to Watch
-        'genre',
         'overview',
         'image_path',
         'user_id', // Foreign key to users table
@@ -32,5 +32,19 @@ class Media extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function scopeSearch($query, $searchQuery): void
+    {
+        $searchQuery = trim($searchQuery);
+
+        $query->where('user_id', Auth::id())
+            ->where(function ($query) use ($searchQuery) {
+                $query->where('title', 'like', "%{$searchQuery}%") // Search in the 'title' column
+                        ->orWhere('type', 'like', "%{$searchQuery}%")  // Search in the 'type' column
+                        ->orWhereHas('genres', function ($query) use ($searchQuery) {
+                            $query->where('name', 'like', "%{$searchQuery}%");
+                        });
+            });
     }
 }

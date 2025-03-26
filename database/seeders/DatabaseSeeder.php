@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'andrew',
+            'name' => 'andrew', // Ensure it's lowercase
             'email' => 'andrewjuan@gmail.com',
-            'password' => 'andrewjuan',
+            'password' => bcrypt('andrewjuan'), // Fix password hashing
         ]);
 
         $this->call([

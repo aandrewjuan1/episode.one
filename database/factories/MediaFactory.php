@@ -33,7 +33,7 @@ class MediaFactory extends Factory
             'type' => $this->faker->randomElement(MediaType::cases())->value,
             'status' => $this->faker->randomElement(MediaStatus::cases())->value,
             'overview' => $this->faker->paragraph,
-            'image_path' => $this->faker->imageUrl(),
+            'image_path' => 'https://picsum.photos/400/300?random=' . rand(1, 1000),
             'user_id' => $userId,
         ];
     }
