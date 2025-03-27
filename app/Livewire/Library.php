@@ -8,13 +8,12 @@ use App\Models\Media;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Title;
-use Livewire\Attributes\Session;
 use Livewire\Attributes\On;
 class Library extends Component
 {
     #[Url(as: 'q')]
-    #[Session]
     public string $searchQuery = '';
+
     public ?Collection $mediaItems;
 
     public function mount()
@@ -27,7 +26,6 @@ class Library extends Component
         $this->loadMedia();
     }
 
-    #[On('media-added')]
     public function loadMedia()
     {
         empty($this->searchQuery)

@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit.prevent="updateMedia">
+    <form wire:submit="updateMedia">
         <flux:heading size="xl" class="mb-6">Edit Media</flux:heading>
         <div class="space-y-6">
             <flux:input
@@ -52,7 +52,9 @@
             />
 
             <div class="flex justify-center">
-                <flux:button variant="primary" type="submit">Update</flux:button>
+                <flux:button variant="primary" type="submit" wire:loading.attr="disabled">
+                    <span wire:loading.remove>Update</span>
+                </flux:button>
             </div>
         </div>
     </form>

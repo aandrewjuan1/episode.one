@@ -1,4 +1,4 @@
-<div class="relative flex flex-col overflow-hidden rounded-lg p-6">
+<div class="relative flex flex-col overflow-hidden rounded-lg p-6" wire:loading.class="opacity-50">
     @if ($media)
         @if (str_starts_with($media->image_path, 'http'))
             <img src="{{ $media->image_path }}" class="h-full w-full rounded-lg shadow-lg" alt="{{ $media->title }}">
@@ -13,10 +13,10 @@
             <flux:dropdown position="top" align="end">
                 <flux:button icon="ellipsis-horizontal" />
                 <flux:menu>
-                    <flux:modal.trigger name="edit-media">
+                    <flux:modal.trigger name="edit-media-modal">
                         <flux:menu.item icon="pencil-square" wire:click="$dispatch('edit-media', { mediaId: {{ $media->id }} })">Edit</flux:menu.item>
                     </flux:modal.trigger>
-                    <flux:modal.trigger name="delete-media">
+                    <flux:modal.trigger name="delete-media-modal">
                         <flux:menu.item icon="trash" variant="danger">Delete</flux:menu.item>
                     </flux:modal.trigger>
                 </flux:menu>
@@ -56,10 +56,10 @@
                 </div>
             @endif
         </div>
-        <flux:modal name="edit-media">
+        <flux:modal name="edit-media-modal">
             <livewire:edit-media />
         </flux:modal>
-        <flux:modal name="delete-media" class="min-w-[22rem]">
+        <flux:modal name="delete-media-modal" class="min-w-[22rem]">
             <div class="space-y-6">
                 <div>
                     <flux:heading size="lg">Delete media?</flux:heading>

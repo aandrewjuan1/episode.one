@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Livewire\WithFileUploads;
 use App\Livewire\Forms\MediaForm;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Validate;
 
 class EditMedia extends Component
 {
@@ -16,6 +17,8 @@ class EditMedia extends Component
 
     public MediaForm $form;
     public ?Media $media = null;
+
+    #[Validate('nullable|image|max:1024', message: 'An error occurred, please try uploading a valid image again.')]
     public $image_path;
 
     public function fillInputs($media)
@@ -42,20 +45,7 @@ class EditMedia extends Component
 
     public function updateMedia()
     {
-    // Validate everything **except** the image
-        $this->validate([
-            'form.title' => 'required|string|max:255',
-            'form.type' => 'required|in:Manga,Anime,Book,Movie',
-            'form.status' => 'nullable|in:Watching,Completed,On Hold,Dropped,Plan to Watch',
-            'form.overview' => 'required|string',
-        ]);
-
-        // If a new image is uploaded, validate it separately
-        if (is_object($this->image_path)) {
-            $this->validate([
-                'image_path' => 'image|max:1024', // Validate only if it's a file
-            ]);
-        }
+        $this->validate();
 
         DB::beginTransaction();
         try {
@@ -74,15 +64,19 @@ class EditMedia extends Component
                 'overview' => $this->form->overview,
                 'image_path' => $this->image_path,
             ]);
-
-            session()->flash('success', 'Media updated successfully!');
-            $this->redirect(route('library'), navigate: true);
-
             DB::commit();
+
+            $this->form->reset();
+            $this->image_path = null;
+
+            session()->flash('media-updated', 'Media successfully updated!');
+            $this->redirect(route('library'),navigate: true);
+
+
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error updating media: ' . $e->getMessage());
-            session()->flash('error', 'Failed to update media. Please try again.');
+            session()->flash('media-updated-error', 'An error occurred while updating media.');
         }
     }
 

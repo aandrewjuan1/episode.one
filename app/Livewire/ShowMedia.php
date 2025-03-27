@@ -19,7 +19,13 @@ class ShowMedia extends Component
     public function deleteMedia()
     {
         $this->media->delete();
-        $this->redirect(route('library'), navigate: true);
+        session()->flash('media-deleted', 'Media successfully  deleted!');
+        $this->redirect(route('library'),navigate: true);
+    }
+
+    public function placeholder()
+    {
+        return view('components.show-media-placeholder');
     }
 
     public function render()

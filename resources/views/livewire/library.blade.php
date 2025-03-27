@@ -1,10 +1,12 @@
-<div class="p-6">
+<div>
     <div class="grid grid-cols-1 min-[1120px]:grid-cols-3 gap-8">
         <div class="md:col-span-1">
             <flux:sidebar sticky>
                 <div class="mb-8">
                     <flux:heading size="xl" level="1">{{ __('Library') }}</flux:heading>
-                    <flux:subheading size="md" class="text-gray-500 dark:text-gray-400">{{ __('View all your media collections') }}</flux:subheading>
+                    <flux:subheading size="md" class="text-gray-500 dark:text-gray-400">
+                        {{ __('View all your media collections') }}
+                    </flux:subheading>
                 </div>
 
                 <flux:navlist>
@@ -16,52 +18,51 @@
                     </flux:navlist.item>
                 </flux:navlist>
             </flux:sidebar>
-            <x-action-message on="media-added" class="text-green-500" wire:transition>
-                {{ __('Media successfully added') }}
-            </x-action-message>
         </div>
-        <div class="md:col-span-2 pt-4">
+
+        <div class="md:col-span-2 pt-4 relative">
+            <x-alert type="green" :message="session('media-added')" />
+            <x-alert type="red" :message="session('media-added-error')" />
+            <x-alert type="red" :message="session('media-deleted')" />
+            <x-alert type="green" :message="session('media-updated')" />
+            <x-alert type="red" :message="session('media-updated-error')" />
             <div class="flex space-x-4 items-start mb-4">
-                    <flux:input icon="magnifying-glass" placeholder="Search by media, genre, or type" wire:model.live="searchQuery">
-                        <x-slot name="iconTrailing">
-                            @if (!empty($searchQuery))
-                                <flux:button size="sm" wire:click="clearSearch()" variant="subtle" icon="x-mark" class="-mr-1 rounded-2xl" />
-                            @endif
-                        </x-slot>
-                    </flux:input>
-                    <flux:modal.trigger name="add-media-modal">
-                        <flux:button icon="plus" variant="primary">Add media</flux:button>
-                    </flux:modal.trigger>
+                <flux:input icon="magnifying-glass" placeholder="Search by media, genre, or type" wire:model.live.debounce.300ms="searchQuery">
+                    <x-slot name="iconTrailing">
+                        @if (!empty($searchQuery))
+                            <flux:button size="sm" wire:click="clearSearch()" variant="subtle" icon="x-mark" class="-mr-1 rounded-2xl" />
+                        @endif
+                    </x-slot>
+                </flux:input>
+                <flux:modal.trigger name="add-media-modal">
+                    <flux:button icon="plus" variant="primary">Add media</flux:button>
+                </flux:modal.trigger>
             </div>
+
             <div class="flex justify-center">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    @if ($mediaItems->isEmpty())
-                        <div class="col-span-full flex flex-col space-y-4 items-center justify-center py-16 rounded-lg text-center">
-                            <flux:heading size="xl" class="text-gray-700 dark:text-gray-300">
-                                No media
-                            </flux:heading>
+                    @forelse ($mediaItems as $media)
+                        <flux:modal.trigger name="show-media-modal">
+                            <a href="#" class="block" wire:click="$dispatch('show-media', { mediaId: {{ $media->id }} })">
+                                <x-media-card
+                                    wire:key="{{ $media->id }}"
+                                    :imagePath="$media->image_path"
+                                    :title="$media->title"
+                                    :type="$media->type"
+                                    :genre="$media->genres->pluck('name')->toArray()"
+                                />
+                            </a>
+                        </flux:modal.trigger>
+                    @empty
+                        <div class="col-span-full text-center py-8">
+                            <p class="text-gray-500 dark:text-gray-400">{{ __('No media items found.') }}</p>
                         </div>
-                    @else
-                        @foreach ($mediaItems as $media)
-                            <flux:modal.trigger name="show-media-modal" >
-                                <a href="#" class="block" wire:click="$dispatch('show-media', { mediaId: {{ $media->id }} })">
-                                    <x-media-card
-                                        wire:key="{{ $media->id }}"
-                                        :imagePath="$media->image_path"
-                                        :title="$media->title"
-                                        :type="$media->type"
-                                        :genre="$media->genres->pluck('name')->toArray()"
-                                    />
-                                </a>
-                            </flux:modal.trigger>
-
-                        @endforeach
-                    @endif
+                    @endforelse
                     <flux:modal name="show-media-modal">
-                        <livewire:show-media lazy/>
+                        <livewire:show-media on-load/>
                     </flux:modal>
-                <flux:modal name="add-media-modal">
-                        <livewire:add-media lazy />
+                    <flux:modal name="add-media-modal">
+                        <livewire:add-media on-load/>
                     </flux:modal>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit.prevent="addMedia">
+    <form wire:submit="addMedia">
         <flux:heading size="xl" class="mb-6">Add media</flux:heading>
         <div class="space-y-6">
             <flux:input label="Title" wire:model="form.title" placeholder="Enter title" class="max-w-sm" required="true" />
@@ -26,7 +26,9 @@
             <flux:input type="file" wire:model="image_path" accept="image/png, image/jpeg" label="Image" class="max-w-lg" required="true"/>
 
             <div class="flex justify-center">
-                <flux:button variant="primary" type="submit">Add</flux:button>
+                <flux:button variant="primary" type="submit" wire:loading.attr="disabled">
+                    <span wire:loading.remove>Add</span>
+                </flux:button>
             </div>
         </div>
     </form>
