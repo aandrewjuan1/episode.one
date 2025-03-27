@@ -16,8 +16,10 @@
                     </flux:navlist.item>
                 </flux:navlist>
             </flux:sidebar>
+            <x-action-message on="media-added" class="text-green-500" wire:transition>
+                {{ __('Media successfully added') }}
+            </x-action-message>
         </div>
-
         <div class="md:col-span-2 pt-4">
             <div class="flex space-x-4 items-start mb-4">
                     <flux:input icon="magnifying-glass" placeholder="Search by media, genre, or type" wire:model.live="searchQuery">
@@ -28,15 +30,20 @@
                         </x-slot>
                     </flux:input>
                     <flux:modal.trigger name="add-media-modal">
-                    <flux:button icon="plus" variant="primary">Add media</flux:button>
+                        <flux:button icon="plus" variant="primary">Add media</flux:button>
                     </flux:modal.trigger>
             </div>
             <div class="flex justify-center">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @if ($mediaItems->isEmpty())
+                        <div class="col-span-full flex flex-col space-y-4 items-center justify-center py-16 rounded-lg text-center">
+                            <flux:heading size="xl" class="text-gray-700 dark:text-gray-300">
+                                No media
+                            </flux:heading>
+                        </div>
                     @else
                         @foreach ($mediaItems as $media)
-                            <flux:modal.trigger name="media-modal" >
+                            <flux:modal.trigger name="show-media-modal" >
                                 <a href="#" class="block" wire:click="$dispatch('show-media', { mediaId: {{ $media->id }} })">
                                     <x-media-card
                                         wire:key="{{ $media->id }}"
@@ -47,14 +54,14 @@
                                     />
                                 </a>
                             </flux:modal.trigger>
+
                         @endforeach
                     @endif
-
-                    <flux:modal name="media-modal">
+                    <flux:modal name="show-media-modal">
                         <livewire:show-media lazy/>
                     </flux:modal>
-                    <flux:modal name="add-media-modal">
-                        <livewire:media lazy/>
+                <flux:modal name="add-media-modal">
+                        <livewire:add-media lazy />
                     </flux:modal>
                 </div>
             </div>

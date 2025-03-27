@@ -16,6 +16,12 @@ class ShowMedia extends Component
         $this->media = Media::with(['reviews', 'genres'])->findOrFail($mediaId);
     }
 
+    public function deleteMedia()
+    {
+        $this->media->delete();
+        $this->redirect(route('library'), navigate: true);
+    }
+
     public function render()
     {
         return view('livewire.show-media', [

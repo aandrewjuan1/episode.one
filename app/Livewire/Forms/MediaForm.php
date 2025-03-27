@@ -7,7 +7,6 @@ use Livewire\Form;
 
 class MediaForm extends Form
 {
-    //
     #[Validate('required|string|max:255')]
     public string $title = '';
 
@@ -20,6 +19,4 @@ class MediaForm extends Form
     #[Validate('required|string')]
     public ?string $overview = null;
 
-    #[Validate('required|image|max:1024')]
-    public $image_path = null;
 }

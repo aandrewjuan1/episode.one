@@ -8,10 +8,12 @@ use App\Models\Media;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Title;
-
+use Livewire\Attributes\Session;
+use Livewire\Attributes\On;
 class Library extends Component
 {
     #[Url(as: 'q')]
+    #[Session]
     public string $searchQuery = '';
     public ?Collection $mediaItems;
 
@@ -25,17 +27,20 @@ class Library extends Component
         $this->loadMedia();
     }
 
-    private function loadMedia()
+    #[On('media-added')]
+    public function loadMedia()
     {
         empty($this->searchQuery)
         ?
         $this->mediaItems = Media::where('user_id', Auth::id())
-        ->with('genres')
-        ->get()
+            ->with('genres')
+            ->orderBy('created_at', 'desc')
+            ->get()
         :
         $this->mediaItems = Media::search($this->searchQuery)
-        ->where('user_id', Auth::id()) // Ensure search is within the authenticated user's media
-        ->get();
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     public function clearSearch()
