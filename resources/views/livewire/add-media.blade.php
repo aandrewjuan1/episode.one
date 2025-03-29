@@ -23,7 +23,7 @@
 
             <flux:textarea label="Overview" wire:model="form.overview" placeholder="Enter a brief overview" rows="4" required="true"></flux:textarea>
 
-            <flux:input type="file" wire:model="image_path" accept="image/png, image/jpeg" label="Image" class="max-w-lg" required="true"/>
+            <flux:input type="file" wire:model="image_path" accept="image/png, image/jpeg" label="Image" class="max-w-lg"/>
 
             <div class="flex justify-center">
                 <flux:button variant="primary" type="submit" wire:loading.attr="disabled">

@@ -23,7 +23,9 @@ class AddMedia extends Component
 
     public function addMedia()
     {
-        $this->validate();
+        $this->form->validate();
+    $this->validate();
+
         DB::beginTransaction();
         try {
             // Store the uploaded image

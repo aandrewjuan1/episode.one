@@ -18,7 +18,7 @@ class EditMedia extends Component
     public MediaForm $form;
     public ?Media $media = null;
 
-    #[Validate('nullable|image|max:1024', message: 'An error occurred, please try uploading a valid image again.')]
+    #[Validate('nullable|image|max:1024', message: 'An error occurred, please try uploading a valid image again')]
     public $image_path;
 
     public function fillInputs($media)
@@ -45,14 +45,17 @@ class EditMedia extends Component
 
     public function updateMedia()
     {
-        $this->validate();
+        $this->form->validate();
 
         DB::beginTransaction();
         try {
             // Check if a new image was uploaded
-            if (is_object($this->image_path)) {
+            if (is_object($this->image_path))
+            {
+                $this->validate();
                 $this->image_path = $this->image_path->store('images', 'public');
-            } else {
+            } else
+            {
                 // Keep existing image if no new file is uploaded
                 $this->image_path = $this->media->image_path;
             }
