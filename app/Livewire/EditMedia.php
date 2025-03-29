@@ -82,9 +82,4 @@ class EditMedia extends Component
             session()->flash('media-updated-error', 'An error occurred while updating media.');
         }
     }
-
-    public function render()
-    {
-        return view('livewire.edit-media');
-    }
 }

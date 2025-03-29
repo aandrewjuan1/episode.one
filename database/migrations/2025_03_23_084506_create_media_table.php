@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->enum('type', ['Manga', 'Anime', 'Book', 'Movie']);
-            $table->enum('status', ['Watching', 'Completed', 'On Hold', 'Dropped', 'Plan to Watch'])->nullable();
+            $table->enum('status', ['Watching', 'Reading', 'Completed', 'On Hold', 'Dropped', 'Plan to Watch'])->nullable();
             $table->text('overview')->nullable();
             $table->string('image_path')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

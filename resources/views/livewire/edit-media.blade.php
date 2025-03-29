@@ -7,24 +7,23 @@
                 wire:model="form.title"
                 placeholder="Enter title"
                 class="max-w-sm"
-                required
+
             />
 
-            <flux:select label="Type" wire:model="form.type" class="max-w-sm" required>
-                <option value="">-- Select Type --</option>
-                <option value="Manga">Manga</option>
-                <option value="Anime">Anime</option>
-                <option value="Book">Book</option>
-                <option value="Movie">Movie</option>
+            <flux:select label="Type" wire:model="form.type" class="max-w-sm" >
+                <flux:select.option value="Anime">Anime</flux:select.option>
+                <flux:select.option value="Manga">Manga</flux:select.option>
+                <flux:select.option value="Book">Book</flux:select.option>
+                <flux:select.option value="Movie">Movie</flux:select.option>
             </flux:select>
 
-            <flux:select label="Status" wire:model="form.status" class="max-w-sm">
-                <option value="">-- Select Status (Optional) --</option>
-                <option value="Watching">Watching</option>
-                <option value="Completed">Completed</option>
-                <option value="On Hold">On Hold</option>
-                <option value="Dropped">Dropped</option>
-                <option value="Plan to Watch">Plan to Watch</option>
+            <flux:select label="Status" wire:model="form.status" class="max-w-sm"  >
+                <flux:select.option value="Watching">Watching</flux:select.option>
+                <flux:select.option value="Reading">Reading</flux:select.option>
+                <flux:select.option value="Completed">Completed</flux:select.option>
+                <flux:select.option value="On Hold">On Hold</flux:select.option>
+                <flux:select.option value="Dropped">Dropped</flux:select.option>
+                <flux:select.option value="Plan to Watch">Plan to Watch</flux:select.option>
             </flux:select>
 
             <flux:textarea
@@ -32,7 +31,7 @@
                 wire:model="form.overview"
                 placeholder="Enter a brief overview"
                 rows="4"
-                required>
+                 >
             </flux:textarea>
 
             <!-- Show existing image preview -->

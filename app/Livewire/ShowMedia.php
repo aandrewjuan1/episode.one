@@ -39,12 +39,9 @@ class ShowMedia extends Component
     }
 
     #[Computed]
-    public function formattedGenres(): string
+    public function genres(): array | null
     {
-        if ($this->media && $this->media->genres->isNotEmpty()) {
-            return $this->media->genres->pluck('name')->implode(', ');
-        }
-        return 'No genres available';
+        return $this->media?->genres->isNotEmpty() ? $this->media->genres->pluck('name')->toArray() : null;
     }
 
     #[Computed]
