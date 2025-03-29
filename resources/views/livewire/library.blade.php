@@ -41,7 +41,7 @@
 
             <div class="flex justify-center">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    @forelse ($mediaItems as $media)
+                    @forelse ($this->mediaItems as $media)
                         <flux:modal.trigger name="show-media-modal">
                             <a href="#" class="block" wire:click="$dispatch('show-media', { mediaId: {{ $media->id }} })">
                                 <x-media-card
@@ -58,14 +58,19 @@
                             <p class="text-gray-500 dark:text-gray-400">{{ __('No media items found.') }}</p>
                         </div>
                     @endforelse
-                    <flux:modal name="show-media-modal">
-                        <livewire:show-media on-load/>
-                    </flux:modal>
-                    <flux:modal name="add-media-modal">
-                        <livewire:add-media on-load/>
-                    </flux:modal>
                 </div>
             </div>
+
+            <div class="mt-4">
+                {{ $this->mediaItems->links() }}
+            </div>
+
+            <flux:modal name="show-media-modal">
+                <livewire:show-media on-load/>
+            </flux:modal>
+            <flux:modal name="add-media-modal">
+                <livewire:add-media on-load/>
+            </flux:modal>
         </div>
     </div>
 </div>

@@ -4,52 +4,40 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Media;
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Title;
-use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
+use Livewire\WithPagination;
+
+#[Title('Library')]
 class Library extends Component
 {
+    use WithPagination;
+
     #[Url(as: 'q')]
     public string $searchQuery = '';
 
-    public ?Collection $mediaItems;
-
-    public function mount()
-    {
-        $this->loadMedia();
-    }
-
+    // Debounce the search query to avoid excessive updates
     public function updatedSearchQuery()
     {
-        $this->loadMedia();
+        $this->resetPage();
     }
 
-    public function loadMedia()
+    #[Computed]
+    public function mediaItems()
     {
-        empty($this->searchQuery)
-        ?
-        $this->mediaItems = Media::where('user_id', Auth::id())
-            ->with('genres')
-            ->orderBy('created_at', 'desc')
-            ->get()
-        :
-        $this->mediaItems = Media::search($this->searchQuery)
-            ->where('user_id', Auth::id())
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Auth::user()->media()->with('genres');
+
+        if (!empty($this->searchQuery)) {
+            $query->search($this->searchQuery);
+        }
+
+        return $query->orderBy('created_at', 'desc')->paginate(6);
     }
 
     public function clearSearch()
     {
         $this->searchQuery = '';
-        $this->loadMedia();
-    }
-
-    #[Title('Library')]
-    public function render()
-    {
-        return view('livewire.library');
+        $this->resetPage();
     }
 }
