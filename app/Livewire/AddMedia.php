@@ -30,12 +30,14 @@ class AddMedia extends Component
     {
         return Genre::orderBy('name')->pluck('name')->toArray();
     }
-
-    public function addMedia()
+    public function validateForm()
     {
         $this->form->validate();
         $this->validate();
+    }
 
+    public function addMedia()
+    {
         DB::beginTransaction();
         try {
             // Store the uploaded image

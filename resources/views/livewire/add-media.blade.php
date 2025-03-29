@@ -8,14 +8,34 @@
     selectOption(option) {
         if (option && !this.selectedOptions.includes(option)) {
             this.selectedOptions.push(option);
+            this.showError = false; // Hide error when a genre is selected
         }
         this.$refs.genreSelect.value = '';
     },
     deselectOption(optionToRemove) {
         this.selectedOptions = this.selectedOptions.filter(option => option !== optionToRemove);
+    },
+    validateAndSubmit() {
+        $wire.validateForm().then(() => { // Call Livewire validation first
+            this.showError = this.selectedOptions.length === 0; // Only show genre error if empty after validation
+
+            if (!this.showError) {
+                $wire.addMedia().then(() => {
+                    $nextTick(() => {
+                        showError = false; // Hide error after successful submission
+                    });
+                }).catch(() => {
+                    $nextTick(() => {
+                        this.showError = this.selectedOptions.length === 0;
+                    });
+                });
+            }
+        }).catch(() => {
+            this.showError = false; // Don't show genre error yet if other fields have errors
+        });
     }
 }">
-    <form @submit.prevent="$wire.addMedia().then(() => {showError = selectedOptions.length === 0;});">
+    <form @submit.prevent="validateAndSubmit()">
         <flux:heading size="xl" class="mb-6">Add media</flux:heading>
         <div class="space-y-6">
             <flux:input label="Title" wire:model="form.title" placeholder="Enter title" class="max-w-sm" />
@@ -31,8 +51,7 @@
                 <template x-for="selectedOption in selectedOptions" :key="selectedOption">
                     <div class="inline-flex items-center rounded-full bg-gray-200 text-gray-800 text-sm py-1 px-3">
                         <span x-text="selectedOption"></span>
-                        <button type="button" @click="deselectOption(selectedOption)"
-                            class="ml-2 text-red-500">✕</button>
+                        <button type="button" @click="deselectOption(selectedOption)" class="ml-2 text-red-500">✕</button>
                     </div>
                 </template>
             </div>
