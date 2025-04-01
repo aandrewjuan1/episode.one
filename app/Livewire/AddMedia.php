@@ -70,7 +70,6 @@ class AddMedia extends Component
 
             session()->flash('media-added', 'Media successfully added!');
             $this->redirect(route('library'), navigate: true);
-
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error adding media: ' . $e->getMessage());

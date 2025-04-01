@@ -10,10 +10,12 @@
                 </div>
 
                 <flux:navlist>
-                    <flux:navlist.item :href="route('library')" icon="book-open-text" wire:navigate class="w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-3 py-2">
+                    <flux:navlist.item :href="route('library')" icon="book-open-text" wire:navigate
+                        class="w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-3 py-2">
                         {{ __('Media') }}
                     </flux:navlist.item>
-                    <flux:navlist.item href="#" wire:navigate icon="heart" class="w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-3 py-2">
+                    <flux:navlist.item href="#" wire:navigate icon="heart"
+                        class="w-full hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md px-3 py-2">
                         {{ __('Favourites') }}
                     </flux:navlist.item>
                 </flux:navlist>
@@ -27,10 +29,12 @@
             <x-alert type="green" :message="session('media-updated')" />
             <x-alert type="red" :message="session('media-updated-error')" />
             <div class="flex space-x-4 items-start mb-4">
-                <flux:input icon="magnifying-glass" placeholder="Search by media, genre, or type" wire:model.live.debounce.300ms="searchQuery">
+                <flux:input icon="magnifying-glass" placeholder="Search by media, genre, or type"
+                    wire:model.live.debounce.300ms="searchQuery">
                     <x-slot name="iconTrailing">
                         @if (!empty($searchQuery))
-                            <flux:button size="sm" wire:click="clearSearch()" variant="subtle" icon="x-mark" class="-mr-1 rounded-2xl" />
+                            <flux:button size="sm" wire:click="clearSearch()" variant="subtle" icon="x-mark"
+                                class="-mr-1 rounded-2xl" />
                         @endif
                     </x-slot>
                 </flux:input>
@@ -43,14 +47,10 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @forelse ($this->mediaItems as $media)
                         <flux:modal.trigger name="show-media-modal">
-                            <a href="#" class="block" wire:click="$dispatch('show-media', { mediaId: {{ $media->id }} })">
-                                <x-media-card
-                                    wire:key="{{ $media->id }}"
-                                    :imagePath="$media->image_path"
-                                    :title="$media->title"
-                                    :type="$media->type"
-                                    :genre="$media->genres->pluck('name')->toArray()"
-                                />
+                            <a href="#" class="block" x-data
+                                @click="$dispatch('show-review', { mediaId: {{ $media->id }} }); $dispatch('show-media', { mediaId: {{ $media->id }} })">
+                                <x-media-card wire:key="{{ $media->id }}" :imagePath="$media->image_path" :title="$media->title"
+                                    :type="$media->type" :genre="$media->genres->pluck('name')->toArray()" />
                             </a>
                         </flux:modal.trigger>
                     @empty
@@ -66,10 +66,10 @@
             </div>
 
             <flux:modal name="show-media-modal">
-                <livewire:show-media on-load/>
+                <livewire:show-media on-load />
             </flux:modal>
             <flux:modal name="add-media-modal">
-                <livewire:add-media on-load/>
+                <livewire:add-media on-load />
             </flux:modal>
         </div>
     </div>

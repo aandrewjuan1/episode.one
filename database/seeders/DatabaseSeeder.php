@@ -21,9 +21,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            GenreSeeder::class, // Add GenreSeeder first
+            GenreSeeder::class,
             FollowerSeeder::class,
-            MediaSeeder::class, // MediaSeeder should come after GenreSeeder
+            MediaSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }
