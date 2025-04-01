@@ -22,7 +22,6 @@ class AddMedia extends Component
     #[Validate('required|image|max:1024', message: 'An error occurred, please try uploading an image again.')]
     public $image_path;
 
-    #[Validate('required|array|min:1', message: 'Please select at least one genre.')]
     public ?array $selectedGenres = [];
 
     #[Computed]
@@ -32,12 +31,13 @@ class AddMedia extends Component
     }
     public function validateForm()
     {
-        $this->form->validate();
-        $this->validate();
+        $this->form->validate(); // Validate form
     }
 
     public function addMedia()
     {
+        $this->validate(); // Validate image path
+
         DB::beginTransaction();
         try {
             // Store the uploaded image
