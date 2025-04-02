@@ -31,44 +31,7 @@
             {{ $this->media->overview }}
         </p>
 
-        <div x-data="{ showReviewForm: false }" class="mt-6">
-            <h3 class="text-lg font-semibold">Reviews</h3>
-
-            {{-- Toggle review form --}}
-            <flux:button @click="showReviewForm = !showReviewForm" variant="subtle" size="sm" class="mt-2">
-                Add a Review
-            </flux:button>
-
-            {{-- Review form (Alpine.js controlled) --}}
-            <div x-show="showReviewForm" x-transition class="mt-4 p-4 bg-gray-200 dark:bg-gray-700 rounded-lg">
-                <form wire:submit="addReview">
-                    <div class="space-y-6">
-                        <flux:select label="Rating" wire:model="rating" class="max-w-sm">
-                            <flux:select.option value="1">1</flux:select.option>
-                            <flux:select.option value="2">2</flux:select.option>
-                            <flux:select.option value="3">3</flux:select.option>
-                            <flux:select.option value="4">4</flux:select.option>
-                            <flux:select.option value="5">5</flux:select.option>
-                        </flux:select>
-
-                        <flux:textarea label="Comment" wire:model="comment" placeholder="Type your comment..."
-                            rows="4">
-                        </flux:textarea>
-
-                        <div class="flex justify-between items-center">
-                            <flux:button type="submit" variant="primary">
-                                Submit Review
-                            </flux:button>
-
-                            <flux:button @click="showReviewForm = false" variant="danger">
-                                Cancel
-                            </flux:button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <livewire:show-review :mediaId="$this->media->id" />
-        </div>
+        <livewire:show-review :mediaId="$this->media->id" />
 
         <flux:modal name="edit-media-modal">
             <livewire:edit-media on-load />

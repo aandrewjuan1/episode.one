@@ -37,12 +37,7 @@ class ReviewPolicy
      */
     public function update(User $user, Review $review): bool
     {
-        return $user->id === $review->user_id || $user->id === $review->media->user_id;
-    }
-
-    public function edit(User $user, Review $review): bool
-    {
-        return $user->id === $review->user_id || $user->id === $review->media->user_id;
+        return $user->id === $review->user_id;
     }
 
     /**
