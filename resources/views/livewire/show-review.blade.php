@@ -1,5 +1,23 @@
-<div x-data="{ showReviewForm: false, editingReviewId: null }" class="mt-6">
-    <h3 class="text-lg font-semibold">Reviews</h3>
+<div x-data="{ showReviewForm: $wire.entangle('showReviewForm'), editingReviewId: null }" class="mt-6">
+
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-semibold text-gray-800">{{ __('Reviews') }}</h3>
+
+        <div class="flex items-center space-x-3">
+            <x-action-message class="text-green-600" on="review-updated">
+                {{ __('Review updated') }}
+            </x-action-message>
+
+            <x-action-message class="text-blue-600" on="review-added">
+                {{ __('Review added') }}
+            </x-action-message>
+
+            <x-action-message class="text-red-600" on="review-deleted">
+                {{ __('Review deleted') }}
+            </x-action-message>
+        </div>
+    </div>
+
 
     {{-- Toggle review form --}}
     <flux:button @click="showReviewForm = !showReviewForm" variant="subtle" size="sm" class="mt-2">

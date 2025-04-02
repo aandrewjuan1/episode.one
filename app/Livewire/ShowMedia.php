@@ -60,7 +60,7 @@ class ShowMedia extends Component
     {
         if ($this->media) {
             $this->media->delete();
-            session()->flash('media-deleted', 'Media successfully deleted!');
+            session()->flash('success', 'Media successfully deleted!');
             $this->redirect(route('library'), navigate: true);
         }
     }

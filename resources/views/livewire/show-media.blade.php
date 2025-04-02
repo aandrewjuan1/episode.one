@@ -27,6 +27,18 @@
             </flux:dropdown>
         </div>
 
+        <div class="mt-2 flex gap-4">
+            <!-- Media Type -->
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <strong>Type:</strong> {{ $this->media->type }}
+            </span>
+
+            <!-- Media Status -->
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <strong>Status:</strong> {{ $this->media->status }}
+            </span>
+        </div>
+
         <p class="mt-2 text-gray-600 dark:text-gray-300 text-base leading-relaxed">
             {{ $this->media->overview }}
         </p>

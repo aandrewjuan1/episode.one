@@ -16,6 +16,8 @@ class ShowReview extends Component
 {
     use AuthorizesRequests;
 
+    public $showReviewForm = false;
+
     #[Validate('required|integer|min:1|max:5')]
     public ?int $rating = null;
 
@@ -70,13 +72,11 @@ class ShowReview extends Component
             ]);
 
             DB::commit();
-
+            $this->dispatch('review-updated');
             $this->reset(['editingReviewId', 'editingComment', 'editingRating']);
-            session()->flash('success', 'Review updated successfully!');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error updating review: ' . $e->getMessage());
-            session()->flash('error', 'An error occurred while updating the review.');
         }
     }
 
@@ -96,12 +96,12 @@ class ShowReview extends Component
 
             DB::commit();
 
+            $this->showReviewForm = false;
             $this->reset(['rating', 'comment']);
-            session()->flash('success', 'Review added successfully!');
+            $this->dispatch('review-added');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error adding review: ' . $e->getMessage());
-            session()->flash('error', 'An error occurred while adding the review.');
         }
     }
 
@@ -119,8 +119,8 @@ class ShowReview extends Component
         $this->authorize('delete', $review);
 
         $review->delete();
+        $this->dispatch('review-deleted');
 
-        session()->flash('message', 'Review deleted successfully.');
     }
 
     public function cancelEdit()
@@ -130,6 +130,8 @@ class ShowReview extends Component
 
     public function render()
     {
+        // Debug session data
+        Log::debug('Session data:', session()->all());
         return view('livewire.show-review');
     }
 }

@@ -23,11 +23,13 @@
         </div>
 
         <div class="md:col-span-2 pt-4 relative">
-            <x-alert type="green" :message="session('media-added')" />
-            <x-alert type="red" :message="session('media-added-error')" />
-            <x-alert type="red" :message="session('media-deleted')" />
-            <x-alert type="green" :message="session('media-updated')" />
-            <x-alert type="red" :message="session('media-updated-error')" />
+            @if (session()->has('success'))
+                <x-alert type="success" :message="session('success')" />
+            @endif
+
+            @if (session()->has('error'))
+                <x-alert type="error" :message="session('error')" />
+            @endif
             <div class="flex space-x-4 items-start mb-4">
                 <flux:input icon="magnifying-glass" placeholder="Search by media, genre, or type"
                     wire:model.live.debounce.300ms="searchQuery">

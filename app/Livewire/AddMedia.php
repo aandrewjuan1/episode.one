@@ -68,7 +68,7 @@ class AddMedia extends Component
             $this->image_path = null;
             $this->selectedGenres = [];
 
-            session()->flash('media-added', 'Media successfully added!');
+            session()->flash('success', 'Media successfully added!');
             $this->redirect(route('library'), navigate: true);
         } catch (\Exception $e) {
             DB::rollBack();

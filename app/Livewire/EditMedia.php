@@ -90,12 +90,12 @@ class EditMedia extends Component
             $this->form->reset();
             $this->image_path = null;
 
-            session()->flash('media-updated', 'Media successfully updated!');
+            session()->flash('success', 'Media successfully updated!');
             $this->redirect(route('library'), navigate: true);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error updating media: ' . $e->getMessage());
-            session()->flash('media-updated-error', 'An error occurred while updating media.');
+            session()->flash('error', 'An error occurred while updating media.');
         }
     }
 
