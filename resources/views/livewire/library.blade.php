@@ -43,6 +43,7 @@
                 <flux:modal.trigger name="add-media-modal">
                     <flux:button icon="plus" variant="primary">Add media</flux:button>
                 </flux:modal.trigger>
+                <flux:button class="ml-4" wire:click="testReverb" variant="ghost">Test Reverb</flux:button>
             </div>
 
             <div class="flex justify-center">

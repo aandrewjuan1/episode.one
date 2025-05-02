@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\TestEvent;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
@@ -33,6 +34,11 @@ class Library extends Component
         }
 
         return $query->orderBy('created_at', 'desc')->paginate(6);
+    }
+
+    public function testReverb()
+    {
+        TestEvent::dispatch('Hello from Laravel');
     }
 
     public function clearSearch()
