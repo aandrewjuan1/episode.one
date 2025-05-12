@@ -8,20 +8,25 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Computed;
-use Livewire\WithPagination;
 
 #[Title('Library')]
 class Library extends Component
 {
-    use WithPagination;
-
     #[Url(as: 'q')]
     public string $searchQuery = '';
 
-    // Debounce the search query to avoid excessive updates
+    public int $perPage = 12;
+    public int $page = 1;
+    public bool $hasMorePages = true;
+
     public function updatedSearchQuery()
     {
         $this->resetPage();
+    }
+
+    public function loadMore()
+    {
+        $this->page++;
     }
 
     #[Computed]
@@ -33,12 +38,20 @@ class Library extends Component
             $query->search($this->searchQuery);
         }
 
-        return $query->orderBy('created_at', 'desc')->paginate(6);
+        $items = $query->orderBy('created_at', 'desc')
+            ->skip(($this->page - 1) * $this->perPage)
+            ->take($this->perPage)
+            ->get();
+
+        $this->hasMorePages = $items->count() === $this->perPage;
+
+        return $items;
     }
 
-    public function testReverb()
+    public function resetPage()
     {
-        TestEvent::dispatch('Hello from Laravel');
+        $this->page = 1;
+        $this->hasMorePages = true;
     }
 
     public function clearSearch()

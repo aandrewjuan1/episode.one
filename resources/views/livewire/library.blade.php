@@ -43,17 +43,39 @@
                 <flux:modal.trigger name="add-media-modal">
                     <flux:button icon="plus" variant="primary">Add media</flux:button>
                 </flux:modal.trigger>
-                <flux:button class="ml-4" wire:click="testReverb" variant="ghost">Test Reverb</flux:button>
             </div>
 
             <div class="flex justify-center">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-3 gap-1 sm:gap-2 md:gap-3"
+                    x-data="{
+                        observe() {
+                            const observer = new IntersectionObserver((entries) => {
+                                entries.forEach(entry => {
+                                    if (entry.isIntersecting && @this.hasMorePages) {
+                                        @this.loadMore()
+                                    }
+                                })
+                            }, { threshold: 0.5 })
+
+                            observer.observe(this.$el.lastElementChild)
+                        }
+                    }"
+                    x-init="observe"
+                    wire:loading.class="opacity-50">
                     @forelse ($this->mediaItems as $media)
                         <flux:modal.trigger name="show-media-modal">
-                            <a href="#" class="block" x-data
+                            <a href="#" class="block aspect-square relative group" x-data
                                 @click="$dispatch('show-review', { mediaId: {{ $media->id }} }); $dispatch('show-media', { mediaId: {{ $media->id }} })">
-                                <x-media-card wire:key="{{ $media->id }}" :imagePath="$media->image_path" :title="$media->title"
-                                    :type="$media->type" :genre="$media->genres->pluck('name')->toArray()" />
+                                <div class="w-full h-full relative">
+                                    <img src="{{ $media->image_path }}" alt="{{ $media->title }}"
+                                        class="w-full h-full object-cover" />
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                                    <div class="absolute bottom-0 left-0 right-0 p-3">
+                                        <h3 class="text-white font-bold text-lg drop-shadow-lg">
+                                            {{ $media->title }}
+                                        </h3>
+                                    </div>
+                                </div>
                             </a>
                         </flux:modal.trigger>
                     @empty
@@ -64,8 +86,8 @@
                 </div>
             </div>
 
-            <div class="mt-4">
-                {{ $this->mediaItems->links() }}
+            <div wire:loading wire:target="loadMore" class="text-center py-4">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-300 border-t-primary"></div>
             </div>
 
             <flux:modal name="show-media-modal">

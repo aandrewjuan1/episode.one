@@ -29,7 +29,7 @@ class MediaFactory extends Factory
         $userId = User::inRandomOrder()->first()->id ?? User::factory()->create()->id;
 
         return [
-            'title' => $this->faker->sentence,
+            'title' => implode(' ', $this->faker->words(rand(2, 3))), // FIXED
             'type' => $this->faker->randomElement(MediaType::cases())->value,
             'status' => $this->faker->randomElement(MediaStatus::cases())->value,
             'overview' => $this->faker->paragraph,
